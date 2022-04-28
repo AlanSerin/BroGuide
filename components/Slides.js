@@ -13,7 +13,7 @@ export default function Slides({navigation}) {
                 swiperRef.current.scrollBy(n)
             }
             else {
-                navigation.navigate('WORKOUTS')
+                navigation.navigate('TabStack')
                 AsyncStorage.setItem('firstTime', '1')
             }
         }

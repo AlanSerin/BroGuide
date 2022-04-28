@@ -12,17 +12,18 @@ import ActiveWorkout from './components/ActiveWorkout'
 import Diet from './components/Diet'
 import AddMeal from './components/AddMeal'
 import Meal from './components/Meal'
+import SignUp from './components/SignUp'
+import SignIn from './components/SignIn'
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-
+let x = false;
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function WORKOUTS({navigation, route}) {
     const [workouts,setWorkouts] = useState(<Stack.Navigator>
-        {/*<Stack.Screen name="Slides" component={Slides} options={{headerShown:false}} />*/}
         <Stack.Screen name="WORKOUTS" component={Home}/>
         <Stack.Screen name="WORKOUT" component={Workout} options={({ route }) => ({ title: route.params.workout.toString().toUpperCase() + ' WORKOUT'})}/>
         <Stack.Screen name="EXERCISE" component={Exercise} options={{headerShown:false}} />
@@ -64,31 +65,42 @@ function DIETSTACK({navigation,route}) {
     );
 }
 
+function TabStack({navigation, ruote }) {
+    return (
+        <Tab.Navigator screenOptions={ ({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+                let iconName;
+
+                if (route.name === 'Workout') {
+                    iconName = focused
+                        ? 'barbell-sharp'
+                        : 'barbell-sharp';
+                } else if (route.name === 'Dieting') {
+                    iconName = focused ? 'restaurant' : 'restaurant';
+                }
+
+                // You can return any component that you like here!
+                return <Ionicons name={iconName} size={size} color={color} />;
+            },
+            tabBarActiveTintColor: '#EF223B',
+            tabBarInactiveTintColor: 'gray',
+            headerShown: false
+        })}>
+            <Tab.Screen name="Workout" component={WORKOUTS}  />
+            <Tab.Screen name="Dieting" component={DIETSTACK} />
+        </Tab.Navigator>
+    )
+}
+
 export default function App() {
   return (
       <NavigationContainer>
-          <Tab.Navigator screenOptions={ ({ route }) => ({
-              tabBarIcon: ({ focused, color, size }) => {
-                  let iconName;
-
-                  if (route.name === 'Workout') {
-                      iconName = focused
-                          ? 'barbell-sharp'
-                          : 'barbell-sharp';
-                  } else if (route.name === 'Dieting') {
-                      iconName = focused ? 'restaurant' : 'restaurant';
-                  }
-
-                  // You can return any component that you like here!
-                  return <Ionicons name={iconName} size={size} color={color} />;
-              },
-              tabBarActiveTintColor: '#EF223B',
-              tabBarInactiveTintColor: 'gray',
-              headerShown: false
-          })}>
-              <Tab.Screen name="Workout" component={WORKOUTS} />
-              <Tab.Screen name="Dieting" component={DIETSTACK} />
-          </Tab.Navigator>
+          <Stack.Navigator>
+              <Stack.Screen name="Slides" component={Slides} options={{headerShown:false}} />
+              <Stack.Screen name="TabStack" component={TabStack} options={{headerShown:false}} />
+              <Stack.Screen name="Create Account" component={SignUp} />
+              <Stack.Screen name="Login" component={SignIn} />
+          </Stack.Navigator>
       </NavigationContainer>
   );
 }
