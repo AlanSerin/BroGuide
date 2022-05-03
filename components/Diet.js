@@ -5,16 +5,17 @@ import CircularProgress from 'react-native-circular-progress-indicator';
 import Ionicons from "@expo/vector-icons/Ionicons";
 import * as React from "react";
 import * as Progress from 'react-native-progress';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Diet({route, navigation}) {
     const [percentage, setPercentage] = useState(0)
-    let x = false
+    let loggedIn = AsyncStorage.getItem('userId')
     useEffect(() => {
         setPercentage(50)
     })
     return (
         <View style={styles.container}>
-            { x ?
+            { loggedIn ?
                 <ScrollView style={{flex: 1, paddingLeft: '4%', paddingRight: '4%'}}>
                     <Text style={styles.progressTitle}>Daily Calories Consumed</Text>
                     <View style={{display: 'flex', flexDirection: 'row', width: '100%',marginBottom: 28}}>

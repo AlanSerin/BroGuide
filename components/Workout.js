@@ -4,7 +4,6 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import * as React from "react";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import alert from "react-native-web/dist/exports/Alert";
 
 export default function Workout({route, navigation}) {
     const [exercises, setExercises] = useState([])

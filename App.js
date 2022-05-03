@@ -18,7 +18,7 @@ import SignIn from './components/SignIn'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-let x = false;
+let loggedIn = AsyncStorage.getItem('userId')
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -95,12 +95,18 @@ function TabStack({navigation, ruote }) {
 export default function App() {
   return (
       <NavigationContainer>
-          <Stack.Navigator>
-              <Stack.Screen name="Slides" component={Slides} options={{headerShown:false}} />
-              <Stack.Screen name="TabStack" component={TabStack} options={{headerShown:false}} />
-              <Stack.Screen name="Create Account" component={SignUp} />
-              <Stack.Screen name="Login" component={SignIn} />
-          </Stack.Navigator>
+          {loggedIn ?
+              <Stack.Navigator>
+                  <Stack.Screen name="TabStack" component={TabStack} options={{headerShown:false}} />
+                  <Stack.Screen name="Create Account" component={SignUp} />
+                  <Stack.Screen name="Login" component={SignIn} />
+              </Stack.Navigator> :
+              <Stack.Navigator>
+                  <Stack.Screen name="Slides" component={Slides} options={{headerShown:false}} />
+                  <Stack.Screen name="TabStack" component={TabStack} options={{headerShown:false}} />
+                  <Stack.Screen name="Create Account" component={SignUp} />
+                  <Stack.Screen name="Login" component={SignIn} />
+              </Stack.Navigator> }
       </NavigationContainer>
   );
 }
