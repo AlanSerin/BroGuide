@@ -8,10 +8,14 @@ import * as Progress from 'react-native-progress';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Diet({route, navigation}) {
+    const [loggedIn, changeLoggedIn] = useState(null)
     const [percentage, setPercentage] = useState(0)
-    let loggedIn = AsyncStorage.getItem('userId')
     useEffect(() => {
         setPercentage(50)
+        AsyncStorage.getItem('userId').then(res => {
+            changeLoggedIn(res)
+            console.log(res)
+        })
     })
     return (
         <View style={styles.container}>

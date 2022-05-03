@@ -18,7 +18,6 @@ import SignIn from './components/SignIn'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-let loggedIn = AsyncStorage.getItem('userId')
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -93,7 +92,12 @@ function TabStack({navigation, ruote }) {
 }
 
 export default function App() {
-  return (
+    const [loggedIn, changeLoggedIn] = useState(null)
+    AsyncStorage.getItem('userId').then(res => {
+        changeLoggedIn(res)
+        console.log(loggedIn)
+    })
+    return (
       <NavigationContainer>
           {loggedIn ?
               <Stack.Navigator>
