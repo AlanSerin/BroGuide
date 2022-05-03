@@ -14,6 +14,7 @@ import AddMeal from './components/AddMeal'
 import Meal from './components/Meal'
 import SignUp from './components/SignUp'
 import SignIn from './components/SignIn'
+import TDEE from './components/TDEE'
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -58,6 +59,7 @@ function DIETSTACK({navigation,route}) {
     return (
         <Stack.Navigator>
             <Stack.Screen name="Dieting" component={Diet}/>
+            <Stack.Screen name="TDEE" component={TDEE}/>
             <Stack.Screen name="Add Meal" component={AddMeal}/>
             <Stack.Screen name="Meal" component={Meal} options={{headerShown: true}}/>
         </Stack.Navigator>

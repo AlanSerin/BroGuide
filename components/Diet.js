@@ -6,20 +6,29 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import * as React from "react";
 import * as Progress from 'react-native-progress';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from "axios";
 
 export default function Diet({route, navigation}) {
     const [loggedIn, changeLoggedIn] = useState(null)
     const [percentage, setPercentage] = useState(0)
+    const [dieting, changeDieting] = useState(null)
+
     useEffect(() => {
         setPercentage(50)
-        AsyncStorage.getItem('userId').then(res => {
-            changeLoggedIn(res)
-            console.log(res)
-        })
-    })
+        if(!loggedIn) {
+            AsyncStorage.getItem('userId').then(res => {
+                changeLoggedIn(res)
+                console.log(res)
+                axios.get(`http://192.168.0.102:3000/api/dieting/${res}`).then((res) => {
+                    changeDieting(res.data)
+                    console.log(res.data)
+                });
+            })
+        }
+    }, [])
     return (
         <View style={styles.container}>
-            { loggedIn ?
+            { loggedIn ? dieting && dieting.length > 0 ?
                 <ScrollView style={{flex: 1, paddingLeft: '4%', paddingRight: '4%'}}>
                     <Text style={styles.progressTitle}>Daily Calories Consumed</Text>
                     <View style={{display: 'flex', flexDirection: 'row', width: '100%',marginBottom: 28}}>
@@ -155,13 +164,21 @@ export default function Diet({route, navigation}) {
                     </View>
                 </ScrollView>:
                 <ScrollView style={{flex: 1, paddingLeft: '4%', paddingRight: '4%'}}>
-                    <Ionicons name={'lock-closed'} size={128} color={'#EF223B'} style={{marginLeft: "auto", marginRight: "auto", marginTop: "4%"}}/>
-                    <Text style={styles.signUpTitle}>User Account Required</Text>
-                    <Text style={{marginBottom: 20, textAlign: "center"}}>User account is required to track meal and calorie consumption</Text>
-                    <TouchableOpacity onPress={() => navigation.navigate('Create Account')} style={styles.accountButton}>
-                        <Text style={{textAlign: "center", color: 'white'}}>Create Account</Text>
+                    <Ionicons name={'restaurant'} size={128} color={'#EF223B'} style={{marginLeft: "auto", marginRight: "auto", marginTop: "4%"}}/>
+                    <Text style={styles.signUpTitle}>No Dieting</Text>
+                    <Text style={{marginBottom: 20, textAlign: "center"}}>Dieting preferences need to be set to start tracking meals, calories and macros</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('TDEE')} style={styles.accountButton}>
+                        <Text style={{textAlign: "center", color: 'white'}}>Set Up Dieting</Text>
                     </TouchableOpacity>
-                </ScrollView> }
+                </ScrollView>:
+                <ScrollView style={{flex: 1, paddingLeft: '4%', paddingRight: '4%'}}>
+                <Ionicons name={'lock-closed'} size={128} color={'#EF223B'} style={{marginLeft: "auto", marginRight: "auto", marginTop: "4%"}}/>
+                <Text style={styles.signUpTitle}>User Account Required</Text>
+                <Text style={{marginBottom: 20, textAlign: "center"}}>User account is required to track meal and calorie consumption</Text>
+                <TouchableOpacity onPress={() => navigation.navigate('Create Account')} style={styles.accountButton}>
+                    <Text style={{textAlign: "center", color: 'white'}}>Create Account</Text>
+                </TouchableOpacity>
+            </ScrollView> }
             <TouchableOpacity onPress={() => navigation.navigate('Add Meal')} style={styles.nextButton}>
                 <Ionicons name={'add'} size={32} color={'white'} />
             </TouchableOpacity>
