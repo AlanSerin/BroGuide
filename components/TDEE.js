@@ -21,9 +21,6 @@ const radioButtonsData = [{
     borderColor: "#EF223B",
     selected: false,
 }]
-const sendData = async () => {
-
-}
 export default function TDEE({navigation}) {
     const [age, onChangeAge] = useState("");
     const [weight, onChangeWeight] = useState("");
@@ -41,6 +38,9 @@ export default function TDEE({navigation}) {
             }
         })
         setRadioButtons(radioButtonsArray);
+    }
+    const sendData = async () => {
+
     }
     return (
         <View style={styles.container}>
